@@ -1,0 +1,15 @@
+{
+  "prod": {
+      "app_function": "autoapp.app",
+      "aws_region": "aws_region_to_deploy",
+      "profile_name": "awscli_profile_to_use",
+      "project_name": "wikipediasql",
+      "runtime": "python3.6",
+      "s3_bucket": "your_s3_bucket",
+      "vpc_config": { // Optional Virtual Private Cloud (VPC) configuration for Lambda function
+          "SubnetIds": [ "subnet-XXXX", "subnet-YYYY", "subnet-ZZZZ"], 
+          "SecurityGroupIds": [ "sg-XXXX" ]
+      },
+      "exclude": ["SQL/*", "*.sql"]
+  }
+}

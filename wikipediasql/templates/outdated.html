@@ -1,0 +1,51 @@
+{%- extends "base.html" %}
+
+{# Loads some of the macros included with Flask-Bootstrap. We are using the
+   utils module here to automatically render Flask's flashed messages in a
+   bootstrap friendly manner #}
+{% import "bootstrap/utils.html" as utils %}
+
+
+{% block content %}
+<div class="jumbotron">
+    <h2>WikipediaSQL</h2>
+    <p>Interface to query the simple english wikipedia data</p>
+</div>
+
+<div class="container">
+  
+  <form method="POST" action="{{ url_for('public.outdated') }}">
+    <div class="form-group">
+        <label for="categoryInput">Enter the category to filter pages</label>
+        <textarea class="form-control" id="categoryInput" rows="1" name="category" placeholder="living people" required>{{ request.form['category'] }}</textarea>
+    </div>
+    <input type="submit" value="Execute">
+  </form>
+
+  {% if request.method == 'POST' %}
+  <h3>Query result</h3>
+  <div class="container"></div>
+  <p>Query execution time: {{execution_time}}</p>
+  <table class="table">
+    <thead>
+      <tr>
+      {% for key in keys %}
+        <th>{{key}}</th>
+      {% endfor %}
+        </tr>
+    </thead>
+    
+    <tbody>
+      {% for row in result %}
+      <tr>
+          {% for column in row %}
+            <td>{{ column }}</td>
+          {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% endif %}
+</div>
+{%- endblock %}
