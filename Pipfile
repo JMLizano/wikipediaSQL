@@ -6,29 +6,20 @@ name = "pypi"
 [packages]
 # Flask
 Flask = "==1.0.2"
-MarkupSafe = "==1.0"
-Werkzeug = "==0.14.1"
-Jinja2 = "==2.10"
-flask-bootstrap = "*"
-flask-paginate = "*"
-zappa = "*"
+flask-bootstrap = "==3.3.7.1"
 
 # Database
 Flask-SQLAlchemy = "==2.3.2"
-pymysql_sa = "*"
+pymysql_sa = "==1.0"
 SQLAlchemy = "==1.2.13"
 
 # Deployment
-gunicorn = ">=19.1.1"
+# gunicorn = ">=19.1.1"
+zappa = "==0.47.0"
 
 # Environment variable parsing
 environs = "==4.0.0"
 
-[dev-packages]
-# Testing
-# pytest = "==3.9.3"
-#WebTest = "==2.0.32"
-#factory-boy = "==2.11.*"
 
 [requires]
 python_version = "3.6"

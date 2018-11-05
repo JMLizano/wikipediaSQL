@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, render_template, request, abort
-from flask_paginate import Pagination, get_page_parameter
+from flask import Blueprint, render_template, request, abort, current_app
 import sqlalchemy
 from sqlalchemy.sql import text
 from time import time
 from ..extensions import db
+
 
 blueprint = Blueprint('public', __name__)
 
@@ -51,24 +51,21 @@ def _execute_query(query, fetch_size=10, **kwargs):
         raise InvalidUsage("You are note allowed to perform that operation", status_code=401)
     except:
         abort(500)
-    
-    
 
-# sqlalchemy.exc.OperationalError
-# sqlalchemy.exc.ProgrammingError
+
 @blueprint.route('/', methods=['GET', 'POST'])
 def home():
     """Home page."""
     headers = {}
     rows = []
     execution_time = 0
-    pagination = None
     if request.method == 'POST':
-        query_input= request.form.get('query', '')
-        headers, rows, execution_time = _execute_query(text(query_input))
-        page = request.args.get(get_page_parameter(), type=int, default=1)
-        pagination = Pagination(page=page, per_page=5, total=len(rows), css_framework='bootstrap4')
-    return render_template("home.html", keys=headers, result=rows, execution_time="%.2fs" % execution_time, pagination=pagination)
+        query_input= request.form.get('query', None)
+        if query_input is None:
+            raise InvalidUsage("You must provide a query", status_code=400)
+        headers, rows, execution_time = _execute_query(text(query_input), fetch_size=current_app.config.get('FETCH_SIZE',20))
+    return render_template("home.html", keys=headers, result=rows, execution_time="%.2fs" % execution_time)
+
 
 @blueprint.route('/outdated', methods=['GET', 'POST'])
 def outdated():
@@ -86,7 +83,8 @@ def outdated():
             " page as b on p.pl_title = b.page_title and b.page_touched > a.page_touched"
         " ORDER BY (b.page_touched - a.page_touched) desc"
         " LIMIT 1;")
-        category_input =request.form.get('category', '').replace(' ', '_').lower()
-        headers, rows, execution_time = _execute_query(query, category=category_input)
-        post = True
+        category_input =request.form.get('category', None)
+        if category_input is None:
+            raise InvalidUsage("You must provide a category", status_code=400)
+        headers, rows, execution_time = _execute_query(query, category=category_input.replace(' ', '_').lower())
     return render_template("outdated.html", keys=headers, result=rows, execution_time="%.2fs" % execution_time)

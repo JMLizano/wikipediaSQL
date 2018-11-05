@@ -73,6 +73,10 @@ Content-Disposition: form-data; name="query"
 select * from page limit 20
 ```
 
+>The results of the queries are truncated, to prevent loading to much >records. The proper way of doing this would be using pagination, but it >is not trivial to implement for this endpoint. 
+>The truncated size is controlled through the 'FETCH_SIZE' parameter.
+
+
 **Outdated**
 ---
 Like 'home' endpoint, but in this case the query is fixed to the following:

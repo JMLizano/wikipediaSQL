@@ -1,5 +1,3 @@
-{% from "bootstrap/pagination.html" import render_pagination %}
-
 {%- extends "base.html" %}
 
 {# Loads some of the macros included with Flask-Bootstrap. We are using the
@@ -31,13 +29,11 @@
     <input type="submit" value="Execute">
   </form>
 
-  
-
   {% if request.method == 'POST' and not error%}
   <h3>Query result</h3>
   <div class="container"></div>
   <p>Query execution time: {{execution_time}}</p>
-  {{ pagination.info }}
+
   <table class="table">
     <thead>
       <tr>
@@ -57,7 +53,7 @@
       {% endfor %}
     </tbody>
   </table>
-  {{ pagination.links }}
+
   </div>
   {% endif %}
 </div>
