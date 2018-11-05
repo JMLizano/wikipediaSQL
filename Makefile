@@ -31,16 +31,16 @@ install:
 	pipenv install --skip-lock -d
 
 deploy:
-	VIRTUAL_ENV=.venv/   pipenv run zappa deploy
+	VIRTUAL_ENV=.venv/ pipenv run zappa deploy
 
 update:
-	VIRTUAL_ENV=.venv/   pipenv run zappa update
+	VIRTUAL_ENV=.venv/ pipenv run zappa update
 
 shell:
 	@pipenv shell
 
 run: ##=> Run Local Flask development server
-	FLASK_APP=wikipediasql.app FLASK_ENV=development flask run
+	FLASK_APP=wikipediasql.app FLASK_ENV=development pipenv run flask run
 
 test: ##=> Run tests for the project
 	pipenv run python -m unittest discover -v -s tests
